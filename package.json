@@ -1,0 +1,29 @@
+{
+  "name": "projetoeletrica",
+  "version": "1.0.0",
+  "description": "Projeto Eletrica",
+  "main": "server/api.js",
+  "scripts": {
+    "startDev": "nodemon",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PedroOtavio011/ProjetoEletrica.git"
+  },
+  "author": "Pedro Otávio",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PedroOtavio011/ProjetoEletrica/issues"
+  },
+  "homepage": "https://github.com/PedroOtavio011/ProjetoEletrica#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "mysql2": "^3.22.2"
+  },
+  "devDependencies": {
+    "lodash": "^4.18.1",
+    "nodemon": "^3.1.14"
+  }
+}

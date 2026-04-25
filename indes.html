@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculador de Bitola | FD.tech</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        
+        <header>
+            <h1>Dimensionamento Elétrico</h1>
+            <p>Cálculo rápido baseado na NBR 5410</p>
+            
+            <nav class="tabs">
+                <button onclick="abrirAba('calculo')" class="tab-btn active">Calculadora</button>
+                <button onclick="abrirAba('dicionario')" class="tab-btn">Dicionário Watts</button>
+            </nav>
+        </header>
+
+        <main>
+            <section id="calculo" class="tab-content">
+                <div class="form-container">
+                    <div class="input-group">
+                        <label>Material do Cabo</label>
+                        <select id="material_id">
+                            <option value="1">Cobre</option>
+                            <option value="2">Alumínio</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Potência (Watts)</label>
+                        <input type="number" id="potencia" placeholder="Ex: 5600">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Tensão (Volts)</label>
+                        <select id="tensao">
+                            <option value="127">127V</option>
+                            <option value="220">220V</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Distância (Metros)</label>
+                        <input type="number" id="distancia" placeholder="Ex: 30">
+                    </div>
+
+                    <button id="btnCalcular">Calcular Bitola</button>
+                </div>
+
+                <div id="resultado" class="result-container hidden">
+                    <h3>Resultado Sugerido:</h3>
+                    <div class="card-result">
+                        <div class="res-item">
+                            <span>Cabo Ideal:</span>
+                            <strong id="res-bitola">--</strong>
+                        </div>
+                        <div class="res-item">
+                            <span>Disjuntor:</span>
+                            <strong id="res-disjuntor">--</strong>
+                        </div>
+                        <div class="res-item">
+                            <span>Queda de Tensão:</span>
+                            <strong id="res-queda">--</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="dicionario" class="tab-content hidden">
+                <div class="search-box">
+                    <label>Buscar Equipamento</label>
+                    <div style="display: flex; gap: 5px;">
+                        <input type="text" id="inputBusca" placeholder="Ex: Chuveiro, Motor...">
+                        <button id="btnBuscarWatts" style="width: auto; padding: 10px 20px;">🔍</button>
+                    </div>
+                </div>
+
+                <div id="containerResultados" class="hidden">
+                    <ul id="listaResultados">
+                        </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
