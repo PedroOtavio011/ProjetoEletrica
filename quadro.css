@@ -1,0 +1,182 @@
+
+/* Importação de fonte moderna */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+    --primary-blue: #007bff;
+    --dark-blue: #0056b3;
+    --light-blue: #e7f1ff;
+    --bg-gradient: linear-gradient(135deg, #001f3f 0%, #007bff 100%);
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --text-color: #333;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: var(--bg-gradient);
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--text-color);
+}
+
+header {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+header h1 {
+    color: white;
+    font-size: 2.2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.container {
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+}
+
+.card {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--dark-blue);
+    font-size: 0.9rem;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 2px solid var(--light-blue);
+    border-radius: 10px;
+    outline: none;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+}
+
+input[type="number"]:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.3s;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+}
+
+button:hover {
+    background: var(--dark-blue);
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* Estilização do Resultado */
+.result-container {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 2px dashed var(--light-blue);
+}
+
+.result-container h3 {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.card-result {
+    background: var(--light-blue);
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 5px solid var(--primary-blue);
+}
+
+.res-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.res-item span {
+    font-size: 1rem;
+    color: #555;
+}
+
+#res-quadro {
+    font-size: 1.3rem;
+    color: var(--dark-blue);
+}
+
+/* Classe para esconder/mostrar via JS */
+.hidden {
+    display: none;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.6rem;
+    }
+    
+    .card {
+        padding: 20px;
+    }
+    
+    button {
+        font-size: 1rem;
+    }
+}
+
+.disjuntor-bloco {
+    width: 35px; /* Largura padrão de um módulo DIN */
+    height: 70px;
+    background: #f0f0f0;
+    border: 2px solid #666;
+    border-top: 6px solid var(--primary-blue); /* Cor do disjuntor */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 9px;
+    font-weight: bold;
+    border-radius: 4px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+.disjuntor-2-polos {
+    width: 70px; /* Dobro da largura para disjuntores duplos */
+    border-top-color: #ff4757; /* Cor diferente para destacar bifásico */
+}

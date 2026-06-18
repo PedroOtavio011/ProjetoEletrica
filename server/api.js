@@ -69,12 +69,26 @@ app.get('/calcular', async (req, res) => {
             queda_tensao: quedaPercentual.toFixed(2) + '%'
         })
 
-    } catch (err) {
+    } catch (err) {server/api.js
         console.error(err);
         res.status(500).json({ error: 'Erro ao calcular dimensionamento' });
     }
         
 });
+
+
+//Rotas para o quadro
+
+app.get('/equipamentos', async (req, res) => {
+    try{
+        const [rows] = await db.query('SELECT * FROM equipamentos');
+        res.json(rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Erro ao buscar equipamentos' });
+    }
+});
+
 
 app.listen(port, () => {
     console.log(`Servidor rodando na porta ${port}`);
