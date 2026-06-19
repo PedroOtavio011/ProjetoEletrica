@@ -8,14 +8,15 @@
 </head>
 <body>
     <div class="container">
-        
+
         <header>
             <h1>Dimensionamento Elétrico</h1>
             <p>Cálculo rápido baseado na NBR 5410</p>
-            
+
             <nav class="tabs">
-                <button onclick="abrirAba('calculo')" class="tab-btn active">Calculadora</button>
-                <button onclick="abrirAba('dicionario')" class="tab-btn">Dicionário Watts</button>
+                <button onclick="abrirAba('calculo')" class="tab-btn active" id="btn-tab-calculo">Calculadora</button>
+                <button onclick="abrirAba('dicionario')" class="tab-btn" id="btn-tab-dicionario">Dicionário Watts</button>
+                <button onclick="abrirAba('orcamento')" class="tab-btn" id="btn-tab-orcamento">Orçamento Obra</button>
             </nav>
         </header>
 
@@ -28,6 +29,11 @@
                             <option value="1">Cobre</option>
                             <option value="2">Alumínio</option>
                         </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Nome do Circuito (Opcional)</label>
+                        <input type="text" id="nome_circuito" placeholder="Ex: Chuveiro Suíte, Ar Condicionado">
                     </div>
 
                     <div class="input-group">
@@ -48,44 +54,168 @@
                         <input type="number" id="distancia" placeholder="Ex: 30">
                     </div>
 
+                    <div class="input-group" style="background: #f1f3f9; padding: 15px; border-radius: 8px; border: 1px solid #d1d3e2; margin-bottom: 15px; box-sizing: border-box;">
+                        <strong style="font-size: 13px; color: #4e73df; display: block; margin-bottom: 10px;">Configuração dos Fios do Circuito:</strong>
+
+                        <div style="margin-bottom: 10px;">
+                            <label style="font-size: 12px; display:block; margin-bottom: 4px; font-weight: bold; color: #333;">Quantas Fases?</label>
+                            <select id="qtd_fases" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+                                <option value="1">1 Fase (Monofásico)</option>
+                                <option value="2">2 Fases (Bifásico)</option>
+                                <option value="3">3 Fases (Trifásico)</option>
+                            </select>
+                        </div>
+
+                        <div style="margin-bottom: 10px;">
+                            <label style="font-size: 12px; display:block; margin-bottom: 4px; font-weight: bold; color: #333;">Condutor Neutro:</label>
+                            <select id="config_neutro" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+                                <option value="nao">Não vai usar Neutro</option>
+                                <option value="igual">Usar Neutro (Mesma bitola da Fase)</option>
+                                <option value="reduzido">Usar Neutro (Bitola reduzida - NBR 5410)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label style="font-size: 12px; display:block; margin-bottom: 4px; font-weight: bold; color: #333;">Condutor Terra:</label>
+                            <select id="config_terra" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+                                <option value="nao">Não vai usar Terra</option>
+                                <option value="igual">Usar Terra (Mesma bitola da Fase)</option>
+                                <option value="reduzido">Usar Terra (Bitola reduzida - NBR 5410)</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <button id="btnCalcular">Calcular Bitola</button>
                 </div>
 
-                <div id="resultado" class="result-container hidden">
+                <div id="resultado" class="result-container hidden" style="margin-top: 20px;">
                     <h3>Resultado Sugerido:</h3>
-                    <div class="card-result">
-                        <div class="res-item">
-                            <span>Cabo Ideal:</span>
+                    <div class="card-result" style="padding: 15px; background: #fff; border-radius: 5px; border: 1px solid #ddd; margin-bottom: 15px;">
+                        <div class="res-item" style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>Cabo Ideal (Fase):</span>
                             <strong id="res-bitola">--</strong>
                         </div>
-                        <div class="res-item">
+                        <div class="res-item" style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                             <span>Disjuntor:</span>
                             <strong id="res-disjuntor">--</strong>
                         </div>
-                        <div class="res-item">
+                        <div class="res-item" style="display: flex; justify-content: space-between;">
                             <span>Queda de Tensão:</span>
                             <strong id="res-queda">--</strong>
                         </div>
                     </div>
+
+                    <div id="materiais-sugeridos-container" style="padding: 12px; background: #fff; border: 1px solid #ddd; border-radius: 5px; text-align: left; margin-bottom: 15px;">
+                        <span style="font-weight: bold; font-size: 13px; color: #333; display: block; margin-bottom: 8px;">➕ Incluir materiais de instalação para este circuito?</span>
+
+                        <label style="display: block; font-size: 13px; margin-bottom: 6px; cursor: pointer;">
+                            <input type="checkbox" id="check-fita" value="Fita Isolante de Alta Fusão"> Fita Isolante de Alta Fusão
+                        </label>
+                        <label style="display: block; font-size: 13px; margin-bottom: 6px; cursor: pointer;">
+                            <input type="checkbox" id="check-conector" value="Conector Porcelana/Wago"> Conector Porcelana/Wago
+                        </label>
+                        <label style="display: block; font-size: 13px; margin-bottom: 6px; cursor: pointer;">
+                            <input type="checkbox" id="check-fita-pvc" value="Fita Isolante PVC Preta"> Fita Isolante PVC Preta
+                        </label>
+                        <label style="display: block; font-size: 13px; margin-bottom: 6px; cursor: pointer;">
+                            <input type="checkbox" id="check-bucha" value="Buchas e Parafusos"> Buchas e Parafusos
+                        </label>
+                    </div>
+
+                    <button id="btnAdicionarAoOrcamento" style="background-color: #28a745;">+ Adicionar ao Orçamento</button>
                 </div>
             </section>
 
             <section id="dicionario" class="tab-content hidden">
-                <div class="search-box">
-                    <label>Buscar Equipamento</label>
-                    <div style="display: flex; gap: 5px;">
-                        <input type="text" id="inputBusca" placeholder="Ex: Chuveiro, Motor...">
-                        <button id="btnBuscarWatts" style="width: auto; padding: 10px 20px;">🔍</button>
+                <div class="form-container">
+                    <div class="input-group">
+                        <label>Buscar Equipamento</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="inputBusca" placeholder="Ex: chuveiro, ar, microondas..." style="flex: 1;">
+                            <button id="btnBuscarWatts" style="width: auto; padding: 0 20px;">Buscar</button>
+                        </div>
+                    </div>
+
+                    <div id="containerResultados" class="hidden" style="margin-top: 15px;">
+                        <h4>Resultados Encontrados:</h4>
+                        <ul id="listaResultados" style="list-style: none; padding: 0; margin: 0;"></ul>
                     </div>
                 </div>
+            </section>
 
-                <div id="containerResultados" class="hidden">
-                    <ul id="listaResultados">
-                        </ul>
+            <section id="orcamento" class="tab-content hidden">
+                <div class="form-container">
+                    <h3>Resumo do Orçamento da Obra</h3>
+
+                    <div id="lista-circuitos-orcamento">
+                        <p style="color: #666; font-style: italic;">Nenhum circuito adicionado ainda.</p>
+                    </div>
+
+                    <hr style="margin: 20px 0;">
+
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #e3e6f0; margin-bottom: 20px;">
+                        <strong style="font-size: 14px; color: #4e73df; display: block; margin-bottom: 10px;">➕ Adicionar Material Avulso / Rápido:</strong>
+
+                        <div class="input-group" style="margin-bottom: 10px;">
+                            <label style="font-size: 12px;">Categoria do Material</label>
+                            <select id="select_categoria_avulso" onchange="atualizarItensAvulsos()">
+                                <option value="">-- Selecione uma Categoria --</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group" style="margin-bottom: 10px;">
+                            <label style="font-size: 12px;">Item</label>
+                            <select id="select_item_avulso">
+                                <option value="">-- Selecione o Item --</option>
+                            </select>
+                            <input type="text" id="nome_material_avulso" class="hidden" placeholder="Digite o nome do material manualmente">
+                        </div>
+
+                        <div class="input-group" style="margin-bottom: 10px;">
+                            <label style="font-size: 12px;">Quantidade</label>
+                            <input type="number" id="qtd_material_avulso" value="1" min="1">
+                        </div>
+
+                        <div class="input-group" style="margin-bottom: 10px;">
+                            <label style="font-size: 12px;">Cor do fio (opcional)</label>
+                            <select id="select_cor_avulso">
+                                <option value="">Sem cor específica (fica a critério)</option>
+                            </select>
+                        </div>
+
+                        <button id="btnAdicionarMaterialAvulso" style="background-color: #6c757d; padding: 8px; font-size: 13px; color: white; border: none; border-radius: 4px; cursor: pointer;">+ Incluir Material</button>
+                    </div>
+
+                    <div id="lista-materiais-avulsos"></div>
+
+                    <hr style="margin: 20px 0;">
+
+                    <div class="input-group">
+                        <label>Valor da Mão de Obra (R$)</label>
+                        <input type="number" id="valor_mao_de_obra" placeholder="Ex: 1500.00" step="0.01">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Outros Custos / Materiais Adicionais (R$)</label>
+                        <input type="number" id="valor_outros_materiais" placeholder="Ex: 350.00" step="0.01">
+                    </div>
+
+                    <button id="btnCalcularTotalOrcamento" style="margin-top: 15px;">Calcular Total do Orçamento</button>
+
+                    <div id="resultado-geral-orcamento" class="hidden" style="margin-top: 25px; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #ccc;">
+                        <h3>Resumo Consolidado</h3>
+
+                        <div style="font-size: 18px; margin: 15px 0; font-weight: bold; color: #28a745;">
+                            Total Geral: <span id="total-geral-reais">R$ 0,00</span>
+                        </div>
+                        <button id="btnGerarWhatsApp" style="background-color: #25D366; color: white; width: 100%; padding: 12px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 16px;">🚀 Enviar via WhatsApp</button>
+                    </div>
+
                 </div>
             </section>
         </main>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>

@@ -1,0 +1,51 @@
+[
+    { "nome": "Motor 1 CV - Monofásica", "watts": 735, "categoria": "Motores Mono" },
+    { "nome": "Motor 2 CV - Monofásica", "watts": 1470, "categoria": "Motores Mono" },
+    { "nome": "Motor 3 CV - Monofásica", "watts": 2205, "categoria": "Motores Mono" },
+    { "nome": "Motor 5 CV - Monofásica", "watts": 3675, "categoria": "Motores Mono" },
+    { "nome": "Motor 7.5 CV - Monofásica", "watts": 5512, "categoria": "Motores Mono" },
+    { "nome": "Motor 10 CV - Monofásica", "watts": 7350, "categoria": "Motores Mono" },
+    { "nome": "Motor 15 CV - Monofásica", "watts": 11025, "categoria": "Motores Mono" },
+    { "nome": "Bomba d'Água Residencial (Sapo/Recalque) 1/2 CV", "watts": 368, "categoria": "Motores Mono" },
+
+    { "nome": "Motor 1 CV - Trifásica", "watts": 735, "categoria": "Motores Tri" },
+    { "nome": "Motor 2 CV - Trifásica", "watts": 1470, "categoria": "Motores Tri" },
+    { "nome": "Motor 3 CV - Trifásica", "watts": 2205, "categoria": "Motores Tri" },
+    { "nome": "Motor 5 CV - Trifásica", "watts": 3675, "categoria": "Motores Tri" },
+    { "nome": "Motor 7.5 CV - Trifásica", "watts": 5512, "categoria": "Motores Tri" },
+    { "nome": "Motor 10 CV - Trifásica", "watts": 7350, "categoria": "Motores Tri" },
+    { "nome": "Motor 15 CV - Trifásica", "watts": 11025, "categoria": "Motores Tri" },
+
+    { "nome": "Chuveiro Elétrico 127V (Comum)", "watts": 5500, "categoria": "Banheiro" },
+    { "nome": "Chuveiro Elétrico 220V (Comum)", "watts": 5500, "categoria": "Banheiro" },
+    { "nome": "Chuveiro Elétrico 220V (Alta Potência)", "watts": 7500, "categoria": "Banheiro" },
+
+    { "nome": "Torneira Elétrica 4400W", "watts": 4400, "categoria": "Cozinha" },
+    { "nome": "Torneira Elétrica 5500W", "watts": 5500, "categoria": "Cozinha" },
+    { "nome": "Tomada Forno Elétrico", "watts": 2500, "categoria": "Cozinha" },
+    { "nome": "Tomada Air Fryer", "watts": 1500, "categoria": "Cozinha" },
+    { "nome": "Micro-ondas", "watts": 1500, "categoria": "Cozinha" },
+    { "nome": "Lava-Louças", "watts": 2000, "categoria": "Cozinha" },
+    { "nome": "Cooktop por Indução (4 Bocas)", "watts": 7000, "categoria": "Cozinha" },
+
+    { "nome": "Secadora de Roupas", "watts": 3500, "categoria": "Lavanderia" },
+    { "nome": "Máquina de Lavar Roupas", "watts": 1000, "categoria": "Lavanderia" },
+
+    { "nome": "Bomba de Piscina 1/2 CV", "watts": 368, "categoria": "Lazer" },
+    { "nome": "Bomba de Piscina 1 CV", "watts": 735, "categoria": "Lazer" },
+    { "nome": "Aquecedor de Piscina (Bomba de Calor)", "watts": 5000, "categoria": "Lazer" },
+    { "nome": "Banheira de Hidromassagem", "watts": 3000, "categoria": "Lazer" },
+
+    { "nome": "Máquina de Café (Beneficiamento)", "watts": 800, "categoria": "Agrotech" },
+    { "nome": "Cilindro de Café", "watts": 2200, "categoria": "Agrotech" },
+
+    { "nome": "Ar Condicionado 9.000 BTUs", "watts": 900, "categoria": "Climatização" },
+    { "nome": "Ar Condicionado 12.000 BTUs", "watts": 1400, "categoria": "Climatização" },
+    { "nome": "Ar Condicionado 15.000 BTUs", "watts": 1800, "categoria": "Climatização" },
+
+    { "nome": "Média Lâmpadas LED (Até 80W)", "watts": 80, "categoria": "Iluminação" },
+    { "nome": "Refletor LED (Média)", "watts": 150, "categoria": "Iluminação" },
+    { "nome": "Refletor LED Alta Potência (Até 300W)", "watts": 300, "categoria": "Iluminação" },
+
+    { "nome": "Portão Eletrônico", "watts": 500, "categoria": "Segurança" }
+]

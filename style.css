@@ -1,139 +1,252 @@
 :root {
-    --primary: #007bff;
-    --dark: #212529;
+    --primary: #4e73df;       /* Azul tecnológico mais moderno */
+    --primary-hover: #2e59d9;
+    --dark: #1a1c23;          /* Escuro mais sofisticado para legibilidade */
     --light: #f8f9fa;
     --success: #28a745;
+    --success-hover: #218838;
+    --gray-border: #d1d4e0;
+    --text-muted: #6e707e;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #e9ecef;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: #f0f2f5;
     margin: 0;
     display: flex;
     justify-content: center;
     padding: 20px;
+    color: var(--dark);
 }
 
 .container {
     background: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    max-width: 450px;
+    padding: 25px;
+    border-radius: 16px; /* Cantos mais suaves e modernos */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06); /* Sombra difusa premium */
+    max-width: 480px;
     width: 100%;
+    box-sizing: border-box;
 }
 
 header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
-h1 { color: var(--dark); margin: 0; font-size: 1.5rem; }
-p { color: #6c757d; font-size: 0.9rem; }
+h1 { 
+    color: var(--dark); 
+    margin: 0 0 4px 0; 
+    font-size: 1.6rem; 
+    font-weight: 700;
+}
 
+p { 
+    color: var(--text-muted); 
+    font-size: 0.9rem; 
+    margin: 0;
+}
+
+/* Estilo das Abas (Navegação Estilo App) */
+.tabs {
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+    margin-top: 20px;
+    background: #eeeeee;
+    padding: 4px;
+    border-radius: 10px;
+    border: none;
+}
+
+.tab-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    padding: 10px 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    margin-top: 0; /* Remove margem herdada se houver */
+    width: auto;   /* Garante que não herde o 100% dos botões normais */
+}
+
+.tab-btn.active {
+    color: var(--primary);
+    background: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* Formulários e Inputs */
 .input-group {
-    margin-bottom: 15px;
+    margin-bottom: 18px;
+    text-align: left;
 }
 
 label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
     font-weight: 600;
     font-size: 0.85rem;
+    color: #3a3b45;
 }
 
 input, select {
     width: 100%;
-    padding: 12px;
-    border: 1px solid #ced4da;
-    border-radius: 6px;
-    box-sizing: border-box; /* Garante que o padding não quebre a largura */
+    padding: 12px 14px;
+    border: 1.5px solid var(--gray-border);
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 0.95rem;
+    color: var(--dark);
+    background-color: #fff;
+    transition: all 0.2s ease;
 }
 
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.15); /* Efeito Glow de Foco */
+}
+
+/* Botões Gerais */
 button {
     width: 100%;
-    padding: 15px;
+    padding: 14px;
     background-color: var(--primary);
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     font-weight: bold;
+    font-size: 1rem;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.2s ease;
     margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
 }
 
-button:hover { background-color: #0056b3; }
+button:hover { 
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
 
-/* Resultado */
+button:active {
+    transform: translateY(0);
+}
+
+/* Botão Específico de Adicionar ao Orçamento */
+#btnAdicionarAoOrcamento {
+    background-color: var(--success);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.15);
+}
+#btnAdicionarAoOrcamento:hover {
+    background-color: var(--success-hover);
+}
+
+/* Telas Ocultas */
+.hidden, .tab-content.hidden { display: none !important; }
+
+/* Bloco de Resultados Técnicos */
 .result-container {
-    margin-top: 30px;
+    margin-top: 25px;
     padding-top: 20px;
-    border-top: 2px solid #eee;
+    border-top: 1.5px dashed #eaecf4; /* Linha pontilhada estilo cupom/laudo */
 }
 
-.hidden { display: none; }
+.result-container h3 {
+    font-size: 1.1rem;
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: var(--dark);
+}
 
 .card-result {
-    background: #f1f8ff;
-    padding: 15px;
-    border-radius: 8px;
-    border-left: 5px solid var(--success);
+    background: #f4f7fe;
+    padding: 16px;
+    border-radius: 10px;
+    border-left: 4px solid var(--primary); /* Azul técnico para amarrar o design */
 }
 
 .res-item {
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
+    font-size: 0.95rem;
 }
+.res-item:last-child { margin-bottom: 0; }
+.res-item span { color: var(--text-muted); }
+.res-item strong { color: var(--dark); font-weight: 700; }
 
-/* Estilo das Abas */
-.tabs {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
+/* Nova Seção Opcional de Materiais Estilizada */
+#materiais-sugeridos-container {
+    background: #ffffff;
+    border: 1px solid var(--gray-border);
+    border-radius: 10px;
+    padding: 14px;
     margin-top: 15px;
-    border-bottom: 2px solid #eee;
 }
 
-.tab-btn {
-    background: none;
-    border: none;
-    color: #666;
-    padding: 10px 15px;
+#materiais-sugeridos-container label {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    background: var(--light);
+    padding: 10px 12px;
+    margin-bottom: 6px !important;
+    border-radius: 6px;
+    border: 1px solid #e3e6f0;
+    transition: all 0.2s ease;
     cursor: pointer;
-    font-weight: bold;
-    font-size: 0.9rem;
+    font-weight: 500;
+}
+#materiais-sugeridos-container label:hover {
+    background: #edf1fc;
+    border-color: #bac8f3;
+}
+#materiais-sugeridos-container input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--success);
+    cursor: pointer;
 }
 
-.tab-btn.active {
-    color: #007bff;
-    border-bottom: 3px solid #007bff;
-}
-
-.tab-content.hidden { display: none; }
-
-/* Estilo da busca */
+/* Área de Busca do Dicionário */
 .search-box { margin-bottom: 20px; }
 
 #containerResultados {
     background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    border: 1px solid var(--gray-border);
+    border-radius: 10px;
     max-height: 250px;
     overflow-y: auto;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
 }
 
 #listaResultados { list-style: none; padding: 0; margin: 0; }
 
 .item-busca {
-    padding: 15px;
-    border-bottom: 1px solid #eee;
+    padding: 14px 16px;
+    border-bottom: 1px solid #edf2f7;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    transition: background 0.15s ease;
 }
+.item-busca:last-child { border-bottom: none; }
+.item-busca:hover { background: #f4f7fe; color: var(--primary); }
 
-.item-busca:hover { background: #f8f9fa; }
-
-strong { color: var(--dark); }
+/* Customização da barra de rolagem (Scrollbar) para ficar elegante */
+#containerResultados::-webkit-scrollbar {
+    width: 6px;
+}
+#containerResultados::-webkit-scrollbar-thumb {
+    background-color: #ccd1d9;
+    border-radius: 4px;
+}

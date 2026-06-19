@@ -1,0 +1,90 @@
+{
+  "fios": [
+    "Cabo Flexível 1,5mm²",
+    "Cabo Flexível 2,5mm²",
+    "Cabo Flexível 4mm²",
+    "Cabo Flexível 6mm²",
+    "Cabo Flexível 10mm²",
+    "Cabo Flexível 16mm²",
+    "Cabo Flexível 25mm²",
+    "Cabo de Rede Cat5e (Par Trançado)",
+    "Cabo de Rede Cat6 (Par Trançado)"
+  ],
+  "interruptores": [
+    "Tomada 10A",
+    "Tomada 20A",
+    "Tomada Dupla 10A",
+    "Tomada Dupla 20A",
+    "Interruptor Simples",
+    "Interruptor com Tomada 10A",
+    "Interruptor com Tomada 20A",
+    "Interruptor 2 Teclas com Tomada 10A",
+    "Interruptor 2 Teclas com Tomada 20A",
+    "Interruptor Paralelo",
+    "Interruptor Paralelo com Tomada 10A",
+    "Interruptor Paralelo com Tomada 20A",
+    "Módulo Tomada 10A",
+    "Módulo Tomada 20A",
+    "Módulo Interruptor",
+    "Módulo Interruptor Paralelo",
+    "Módulo Intermediário",
+    "Placa 1 Posto",
+    "Placa 2 Postos",
+    "Placa 3 Postos"
+  ],
+  "conectores": [
+    "Conector Perfurante 70",
+    "Conector Perfurante 150-35",
+    "Conector Perfurante 120 x 120"
+  ],
+  "eletrodutos": [
+    "Eletroduto Corrugado Amarelo 1/2\"",
+    "Eletroduto Corrugado Amarelo 3/4\"",
+    "Eletroduto Corrugado Amarelo 1\"",
+    "Eletroduto Corrugado Laranja (Reforçado) 3/4\"",
+    "Eletroduto Corrugado Laranja (Reforçado) 1\"",
+    "Eletroduto PVC Rígido 3/4\"",
+    "Eletroduto PVC Rígido 1\"",
+    "Eletroduto Galvanizado Eletrolítico 3/4\"",
+    "Eletroduto Galvanizado Eletrolítico 1\""
+  ],
+  "disjuntores": [
+    "Disjuntor Monopolar DIN 10A",
+    "Disjuntor Monopolar DIN 16A",
+    "Disjuntor Monopolar DIN 20A",
+    "Disjuntor Monopolar DIN 25A",
+    "Disjuntor Monopolar DIN 32A",
+    "Disjuntor Monopolar DIN 40A",
+    "Disjuntor Monopolar DIN 50A",
+    "Disjuntor Bipolar DIN 10A",
+    "Disjuntor Bipolar DIN 16A",
+    "Disjuntor Bipolar DIN 20A",
+    "Disjuntor Bipolar DIN 25A",
+    "Disjuntor Bipolar DIN 32A",
+    "Disjuntor Bipolar DIN 40A",
+    "Disjuntor Bipolar DIN 50A",
+    "Disjuntor Tripolar DIN 32A",
+    "Disjuntor Tripolar DIN 50A",
+    "Interruptor DR Bipolar 40A",
+    "Interruptor DR Tetrapolar 63A",
+    "DPS 275V 20kA",
+    "DPS 275V 40kA",
+    "Barramento Pente Bifásico ",
+    "Barramento Pente Trifásico"
+  ],
+  "fixacao_e_isolamento": [
+    "Fita Isolante 20 metros",
+    "Fita Isolante Auto-Fusão",
+    "Bucha com Anel 6mm com Parafuso",
+    "Bucha com Anel 8mm com Parafuso"
+  ],
+  "terminais_e_emendas": [
+    "Terminal Ilhós Tubular 1,5mm²",
+    "Terminal Ilhós Tubular 2,5mm²",
+    "Terminal Ilhós Tubular 4mm²",
+    "Terminal Ilhós Tubular 6mm²",
+    "Conector Wago 2 Fios (221-412)",
+    "Conector Wago 3 Fios (221-413)",
+    "Conector Wago 5 Fios (221-415)"
+  ]
+}
