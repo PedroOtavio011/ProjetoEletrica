@@ -17,6 +17,9 @@
                 <button onclick="abrirAba('calculo')" class="tab-btn active" id="btn-tab-calculo">Calculadora</button>
                 <button onclick="abrirAba('dicionario')" class="tab-btn" id="btn-tab-dicionario">Dicionário Watts</button>
                 <button onclick="abrirAba('orcamento')" class="tab-btn" id="btn-tab-orcamento">Orçamento Obra</button>
+                <button onclick="abrirAba('conta')" class="tab-btn" id="btn-tab-conta">
+                    <span id="indicador-conta">👤 Conta</span>
+                </button>
             </nav>
         </header>
 
@@ -209,6 +212,75 @@
                             Total Geral: <span id="total-geral-reais">R$ 0,00</span>
                         </div>
                         <button id="btnGerarWhatsApp" style="background-color: #25D366; color: white; width: 100%; padding: 12px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 16px;">🚀 Enviar via WhatsApp</button>
+                    </div>
+
+                </div>
+            </section>
+            <section id="conta" class="tab-content hidden">
+                <div class="form-container">
+
+                    <!-- ESTADO: DESLOGADO -->
+                    <div id="bloco-deslogado">
+                        <h3>Minha Conta</h3>
+
+                        <div style="display:flex; gap:8px; margin-bottom:15px;">
+                            <button onclick="mostrarFormulario('login')" id="btn-toggle-login" class="tab-btn active" style="flex:1;">Entrar</button>
+                            <button onclick="mostrarFormulario('cadastro')" id="btn-toggle-cadastro" class="tab-btn" style="flex:1;">Criar Conta</button>
+                        </div>
+
+                        <!-- FORM LOGIN -->
+                        <div id="form-login">
+                            <div class="input-group">
+                                <label>Email</label>
+                                <input type="email" id="login_email" placeholder="seuemail@exemplo.com">
+                            </div>
+                            <div class="input-group">
+                                <label>Senha</label>
+                                <input type="password" id="login_senha" placeholder="Sua senha">
+                            </div>
+                            <button id="btnLogin" style="background-color:#007bff;">Entrar</button>
+                            <p id="erro-login" style="color:#dc3545; font-size:13px; margin-top:8px;"></p>
+                        </div>
+
+                        <!-- FORM CADASTRO -->
+                        <div id="form-cadastro" class="hidden">
+                            <div class="input-group">
+                                <label>Email</label>
+                                <input type="email" id="cadastro_email" placeholder="seuemail@exemplo.com">
+                            </div>
+                            <div class="input-group">
+                                <label>Senha (mínimo 6 caracteres)</label>
+                                <input type="password" id="cadastro_senha" placeholder="Crie uma senha">
+                            </div>
+                            <button id="btnCadastro" style="background-color:#28a745;">Criar Conta</button>
+                            <p id="erro-cadastro" style="color:#dc3545; font-size:13px; margin-top:8px;"></p>
+                        </div>
+                    </div>
+
+                    <!-- ESTADO: LOGADO -->
+                    <div id="bloco-logado" class="hidden">
+                        <h3>Minha Conta</h3>
+                        <p style="margin-bottom:15px;">Logado como: <strong id="texto-email-logado">--</strong></p>
+
+                        <div id="bloco-sem-licenca" class="hidden">
+                            <div style="background:#fff3cd; color:#856404; padding:12px; border-radius:6px; margin-bottom:15px; font-size:13px;">
+                                ⚠️ Você ainda não tem uma licença ativa. As funções de Orçamento e busca de preços ficam bloqueadas até a ativação.
+                            </div>
+                            <div class="input-group">
+                                <label>Chave de Licença</label>
+                                <input type="text" id="input_chave_licenca" placeholder="Ex: FDTECH-A3F2-9KQR" style="text-transform:uppercase;">
+                            </div>
+                            <button id="btnAtivarLicenca" style="background-color:#28a745;">Ativar Licença</button>
+                            <p id="erro-licenca" style="color:#dc3545; font-size:13px; margin-top:8px;"></p>
+                        </div>
+
+                        <div id="bloco-com-licenca" class="hidden">
+                            <div style="background:#d4edda; color:#155724; padding:12px; border-radius:6px; margin-bottom:15px; font-size:13px;">
+                                ✅ Licença ativa. Todas as funções estão liberadas.
+                            </div>
+                        </div>
+
+                        <button id="btnLogout" style="background-color:#6c757d; margin-top:10px;">Sair da Conta</button>
                     </div>
 
                 </div>

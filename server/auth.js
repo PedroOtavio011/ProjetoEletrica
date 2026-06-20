@@ -2,11 +2,20 @@
  * auth.js
  * Sistema de cadastro/login simples + ativação de licença por chave manual.
  */
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const db = require('./db');
 
-const JWT_SECRET = process.env.JWT_SECRET
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET) {
+    console.error('\n❌ ERRO: JWT_SECRET não encontrado no .env!');
+    console.error(`Verifique se existe um arquivo .env em: ${path.join(__dirname, '.env')}`);
+    console.error('Ele precisa ter a linha: JWT_SECRET=seu_texto_secreto_aqui\n');
+    process.exit(1);
+}
 
 function registrarRotasAuth(app) {
 

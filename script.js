@@ -11,7 +11,12 @@ const CONFIG = {
     ENDPOINTS: {
         POTENCIAS_JSON: 'json/potencias.json',
         MATERIAIS_JSON: 'json/guiaRapido.json',
-        CALCULO_API: 'http://localhost:3000/calcular'
+        CALCULO_API: 'http://localhost:3000/calcular',
+        BUSCAR_PRECOS_API: 'http://localhost:3000/buscar-precos',
+        AUTH_REGISTRO: 'http://localhost:3000/auth/registro',
+        AUTH_LOGIN: 'http://localhost:3000/auth/login',
+        AUTH_ATIVAR_LICENCA: 'http://localhost:3000/auth/ativar-licenca',
+        AUTH_STATUS: 'http://localhost:3000/auth/status'
     },
     DEBUG: true
 };
@@ -68,7 +73,15 @@ function cachearElementos() {
         'select_categoria_avulso', 'select_item_avulso', 'nome_material_avulso',
         'select_cor_avulso', 'qtd_material_avulso', 'btnAdicionarMaterialAvulso', 'lista-materiais-avulsos',
         'btnCalcularTotalOrcamento', 'valor_mao_de_obra', 'valor_outros_materiais',
-        'resultado-geral-orcamento', 'total-geral-reais', 'btnGerarWhatsApp'
+        'resultado-geral-orcamento', 'total-geral-reais', 'btnGerarWhatsApp',
+        // Tela de Conta
+        'bloco-deslogado', 'bloco-logado', 'form-login', 'form-cadastro',
+        'btn-toggle-login', 'btn-toggle-cadastro',
+        'login_email', 'login_senha', 'btnLogin', 'erro-login',
+        'cadastro_email', 'cadastro_senha', 'btnCadastro', 'erro-cadastro',
+        'texto-email-logado', 'bloco-sem-licenca', 'bloco-com-licenca',
+        'input_chave_licenca', 'btnAtivarLicenca', 'erro-licenca', 'btnLogout',
+        'indicador-conta'
     ];
     ids.forEach(id => { DOM[id] = document.getElementById(id); });
 }
@@ -80,6 +93,8 @@ document.addEventListener('DOMContentLoaded', () => {
     carregarMateriaisAvulsos();
     popularCoresAvulso();
     registrarEventos();
+    registrarEventosAuth();
+    atualizarTelaConta();
 });
 
 function popularCoresAvulso() {
@@ -428,11 +443,13 @@ function removerMaterialAvulso(index) {
 }
 
 /**
- * Formata o valor do disjuntor garantindo que o sufixo "A" apareça uma única vez,
- * independente de como a API retornar (ex: "63" ou "63A").
+ * Formata o valor do disjuntor garantindo que o sufixo "A" apareça uma única vez.
+ * Extrai APENAS o primeiro número válido do valor recebido — isso evita problemas
+ * caso o banco retorne algo como "32/40", "32,40" ou "32-40A" (concatenaria errado).
  */
 function formatarDisjuntor(valor) {
-    const numerico = String(valor).replace(/[^0-9.]/g, '');
+    const match = String(valor).match(/[0-9]+(\.[0-9]+)?/);
+    const numerico = match ? match[0] : String(valor).replace(/[^0-9.]/g, '');
     return `${numerico}A`;
 }
 
@@ -527,6 +544,9 @@ function fecharOrcamento() {
         alert("Adicione pelo menos um item.");
         return;
     }
+
+    if (!exigirLicencaOuRedirecionar()) return;
+
     orcamentoAtual.maoDeObra = parseFloat(DOM.valor_mao_de_obra.value) || 0;
     orcamentoAtual.outrosMateriais = parseFloat(DOM.valor_outros_materiais.value) || 0;
 
@@ -540,6 +560,8 @@ function atualizarTotalGeral() {
 }
 
 function enviarWhatsApp() {
+    if (!exigirLicencaOuRedirecionar()) return;
+
     let texto = "*Orçamento Elétrico - FD.tech*%0A%0A";
 
     if (orcamentoAtual.circuitos.length > 0) {
@@ -618,4 +640,216 @@ function calcularBitolaReduzida(bitolaFase) {
 
     if (fase <= 25) return fase; // Norma proíbe redução até 25mm²
     return tabelaReducao[fase] || fase; // Se não estiver na tabela (bitola não padrão), mantém igual à fase por segurança
+}
+
+/* =========================================================
+ * MÓDULO DE AUTENTICAÇÃO E LICENÇA
+ * ========================================================= */
+
+let statusConta = {
+    logado: false,
+    email: null,
+    temLicencaAtiva: false
+};
+
+function registrarEventosAuth() {
+    if (DOM['btnLogin']) DOM['btnLogin'].addEventListener('click', fazerLogin);
+    if (DOM['btnCadastro']) DOM['btnCadastro'].addEventListener('click', fazerCadastro);
+    if (DOM['btnAtivarLicenca']) DOM['btnAtivarLicenca'].addEventListener('click', ativarLicenca);
+    if (DOM['btnLogout']) DOM['btnLogout'].addEventListener('click', fazerLogout);
+}
+
+function mostrarFormulario(qual) {
+    const ehLogin = qual === 'login';
+    DOM['form-login'].classList.toggle('hidden', !ehLogin);
+    DOM['form-cadastro'].classList.toggle('hidden', ehLogin);
+    DOM['btn-toggle-login'].classList.toggle('active', ehLogin);
+    DOM['btn-toggle-cadastro'].classList.toggle('active', !ehLogin);
+}
+
+async function fazerCadastro() {
+    const email = DOM['cadastro_email']?.value.trim();
+    const senha = DOM['cadastro_senha']?.value;
+    DOM['erro-cadastro'].innerText = '';
+
+    if (!email || !senha) {
+        DOM['erro-cadastro'].innerText = 'Preencha email e senha.';
+        return;
+    }
+
+    try {
+        const response = await fetch(CONFIG.ENDPOINTS.AUTH_REGISTRO, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, senha })
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+            DOM['erro-cadastro'].innerText = data.error || 'Erro ao criar conta.';
+            return;
+        }
+
+        salvarSessao(data.token, data.email);
+        await atualizarTelaConta();
+    } catch (err) {
+        console.error('Erro no cadastro:', err);
+        DOM['erro-cadastro'].innerText = 'Não foi possível conectar ao servidor.';
+    }
+}
+
+async function fazerLogin() {
+    const email = DOM['login_email']?.value.trim();
+    const senha = DOM['login_senha']?.value;
+    DOM['erro-login'].innerText = '';
+
+    if (!email || !senha) {
+        DOM['erro-login'].innerText = 'Preencha email e senha.';
+        return;
+    }
+
+    try {
+        const response = await fetch(CONFIG.ENDPOINTS.AUTH_LOGIN, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, senha })
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+            DOM['erro-login'].innerText = data.error || 'Email ou senha incorretos.';
+            return;
+        }
+
+        salvarSessao(data.token, data.email);
+        await atualizarTelaConta();
+    } catch (err) {
+        console.error('Erro no login:', err);
+        DOM['erro-login'].innerText = 'Não foi possível conectar ao servidor.';
+    }
+}
+
+function fazerLogout() {
+    localStorage.removeItem('fdtech_token');
+    localStorage.removeItem('fdtech_email');
+    statusConta = { logado: false, email: null, temLicencaAtiva: false };
+    atualizarTelaConta();
+}
+
+function salvarSessao(token, email) {
+    localStorage.setItem('fdtech_token', token);
+    localStorage.setItem('fdtech_email', email);
+}
+
+function obterToken() {
+    return localStorage.getItem('fdtech_token');
+}
+
+async function ativarLicenca() {
+    const chave = DOM['input_chave_licenca']?.value.trim();
+    DOM['erro-licenca'].innerText = '';
+
+    if (!chave) {
+        DOM['erro-licenca'].innerText = 'Digite a chave de licença.';
+        return;
+    }
+
+    try {
+        const response = await fetch(CONFIG.ENDPOINTS.AUTH_ATIVAR_LICENCA, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${obterToken()}`
+            },
+            body: JSON.stringify({ chave })
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+            DOM['erro-licenca'].innerText = data.error || 'Não foi possível ativar a licença.';
+            return;
+        }
+
+        alert('Licença ativada com sucesso! 🎉');
+        await atualizarTelaConta();
+    } catch (err) {
+        console.error('Erro ao ativar licença:', err);
+        DOM['erro-licenca'].innerText = 'Não foi possível conectar ao servidor.';
+    }
+}
+
+// Consulta o backend pra saber se o token é válido e se a licença está ativa.
+// Chamada no carregamento da página e depois de qualquer ação de login/cadastro/ativação.
+async function atualizarTelaConta() {
+    const token = obterToken();
+
+    if (!token) {
+        statusConta = { logado: false, email: null, temLicencaAtiva: false };
+        renderizarTelaConta();
+        return;
+    }
+
+    try {
+        const response = await fetch(CONFIG.ENDPOINTS.AUTH_STATUS, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!response.ok) {
+            // Token expirado ou inválido — desloga silenciosamente
+            fazerLogout();
+            return;
+        }
+
+        const data = await response.json();
+        statusConta = {
+            logado: true,
+            email: data.email,
+            temLicencaAtiva: data.temLicencaAtiva
+        };
+        renderizarTelaConta();
+
+    } catch (err) {
+        console.error('Erro ao checar status da conta:', err);
+        // Falha de rede: mantém o usuário "logado" localmente, mas sem confirmar licença
+    }
+}
+
+function renderizarTelaConta() {
+    if (!DOM['bloco-deslogado']) return; // tela de conta pode não existir em todas as páginas
+
+    DOM['bloco-deslogado'].classList.toggle('hidden', statusConta.logado);
+    DOM['bloco-logado'].classList.toggle('hidden', !statusConta.logado);
+
+    if (statusConta.logado) {
+        DOM['texto-email-logado'].innerText = statusConta.email;
+        DOM['bloco-sem-licenca'].classList.toggle('hidden', statusConta.temLicencaAtiva);
+        DOM['bloco-com-licenca'].classList.toggle('hidden', !statusConta.temLicencaAtiva);
+    }
+
+    // Indicador visual no botão da aba (👤 vira ✅ quando licença ativa)
+    if (DOM['indicador-conta']) {
+        if (statusConta.logado && statusConta.temLicencaAtiva) {
+            DOM['indicador-conta'].innerText = '✅ Conta';
+        } else if (statusConta.logado) {
+            DOM['indicador-conta'].innerText = '⚠️ Conta';
+        } else {
+            DOM['indicador-conta'].innerText = '👤 Conta';
+        }
+    }
+}
+
+// Checa se o usuário pode usar uma função paga. Se não puder, leva ele pra aba de Conta
+// com a explicação certa (precisa logar OU precisa ativar licença).
+function exigirLicencaOuRedirecionar() {
+    if (!statusConta.logado) {
+        alert('Você precisa criar uma conta ou entrar para usar esta função.');
+        abrirAba('conta');
+        return false;
+    }
+    if (!statusConta.temLicencaAtiva) {
+        alert('Esta função exige uma licença ativa. Ative sua chave na aba Conta.');
+        abrirAba('conta');
+        return false;
+    }
+    return true;
 }
