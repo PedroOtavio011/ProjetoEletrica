@@ -95,7 +95,30 @@ document.addEventListener('DOMContentLoaded', () => {
     registrarEventos();
     registrarEventosAuth();
     atualizarTelaConta();
+    registrarServiceWorker();
 });
+
+/**
+ * Registra o Service Worker, que habilita o funcionamento como PWA
+ * (cache offline + capacidade de "instalar" o app no celular).
+ * Roda só se o navegador suportar essa tecnologia (todos os navegadores modernos suportam).
+ */
+function registrarServiceWorker() {
+    if (!('serviceWorker' in navigator)) {
+        LOG('PWA', 'Este navegador não suporta Service Worker.');
+        return;
+    }
+
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+            .then((registro) => {
+                LOG('PWA', 'Service Worker registrado com sucesso.', registro.scope);
+            })
+            .catch((erro) => {
+                console.error('[FD.tech - PWA] Falha ao registrar o Service Worker:', erro);
+            });
+    });
+}
 
 function popularCoresAvulso() {
     const select = DOM.select_cor_avulso;
