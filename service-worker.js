@@ -1,19 +1,19 @@
-const CACHE_NAME = 'fdtech-cache-v2'; // Incrementado para v2
+const CACHE_NAME = 'fdtech-cache-v3'; // Incrementado para v3 para forçar atualização
 
-// Lista corrigida com base na árvore de arquivos real
+// Corrigido: Usando caminhos absolutos baseados no repositório do GitHub Pages
 const ARQUIVOS_PARA_CACHE = [
-    './',
-    './index.html',
-    './style.css',
-    './script.js',
-    './manifest.json',
-    './quadro.html',
-    './quadro.css',
-    './quadro.js',
-    './json/potencias.json',
-    './json/guiaRapido.json',
-    './icons/icon-192.png',
-    './icons/icon-512.png'
+    '/ProjetoEletrica/',
+    '/ProjetoEletrica/index.html',
+    '/ProjetoEletrica/style.css',
+    '/ProjetoEletrica/script.js',
+    '/ProjetoEletrica/manifest.json',
+    '/ProjetoEletrica/quadro.html',
+    '/ProjetoEletrica/quadro.css',
+    '/ProjetoEletrica/quadro.js',
+    '/ProjetoEletrica/json/potencias.json',
+    '/ProjetoEletrica/json/guiaRapido.json',
+    '/ProjetoEletrica/icons/icon-192.png',
+    '/ProjetoEletrica/icons/icon-512.png'
 ];
 
 // --- INSTALAÇÃO ---
@@ -46,8 +46,10 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
     const url = new URL(event.request.url);
 
-    // Melhoria sênior: Se a requisição for para o backend local (porta 3000) 
-    // ou contiver rotas de autenticação/cálculo, roda estritamente na rede.
+    // Evita interceptar requisições de extensões do navegador
+    if (!event.request.url.startsWith(self.location.origin)) return;
+
+    // Se a requisição for para o backend local ou rotas de autenticação/cálculo, roda estritamente na rede.
     const ehChamadaDeApi = url.port === '3000' || 
                            url.pathname.includes('/auth') || 
                            url.pathname.includes('/calcular') || 
@@ -73,7 +75,7 @@ self.addEventListener('fetch', (event) => {
             }
             return fetch(event.request).catch(() => {
                 if (event.request.mode === 'navigate') {
-                    return caches.match('./index.html');
+                    return caches.match('/ProjetoEletrica/index.html');
                 }
             });
         })
